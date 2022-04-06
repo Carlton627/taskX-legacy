@@ -1,0 +1,28 @@
+{
+    "name": "taskx",
+    "version": "1.0.0",
+    "description": "A nifty tool to manage your tasks",
+    "default": "index.html",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "parcel build index.html --dist-dir ./dist",
+        "start": "parcel index.html -p 8080"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Carlton627/taskX.git"
+    },
+    "author": "Carlton Rodrigues",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Carlton627/taskX/issues"
+    },
+    "homepage": "https://github.com/Carlton627/taskX#readme",
+    "devDependencies": {
+        "parcel": "^2.4.1"
+    },
+    "dependencies": {
+        "core-js": "^3.21.1",
+        "regenerator-runtime": "^0.13.9"
+    }
+}
