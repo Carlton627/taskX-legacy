@@ -4,10 +4,129 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Task X - Nifty tool to manage your tasks</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+        />
+        <link rel="stylesheet" href="./src/css/style.css" />
+        <title>Task X - A nifty tool to manage your tasks</title>
+        <script defer src="./src/js/controller.js" type="module"></script>
     </head>
     <body>
-        <h1 class="get-started"></h1>
-        <script src="./src/js/controller.js" type="module"></script>
+        <nav class="navbar is-warning navbar-main" role="navigation">
+            <div class="navbar-brand">
+                <h2 class="navbar-item">taskX</h2>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <button class="button button-login is-light">
+                            <img src="./src/assets/Google__G__Logo.svg" />
+                            &nbsp;Sign in
+                        </button>
+                        <div class="user-signed-in hidden">
+                            <button
+                                class="nav__btn--new-task button is-warning is-light"
+                            >
+                                New task
+                            </button>
+                            <button class="button button-logoff is-warning">
+                                Sign out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="task-creator modal">
+            <div class="modal-background overlay"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Create a Task</p>
+                    <button
+                        class="delete close-form"
+                        aria-label="close"
+                    ></button>
+                </header>
+                <section class="modal-card-body">
+                    <form class="task-upload">
+                        <div class="field">
+                            <label class="label">Choose task status</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select name="status" class="task-status">
+                                        <option value="todo">To-do</option>
+                                        <option value="inProgress">
+                                            In progress
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Task Name</label>
+                            <div class="control">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    class="input"
+                                    placeholder="Debug app.js"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label"
+                                >Describe the task at hand</label
+                            >
+                            <div class="control">
+                                <textarea
+                                    placeholder="Don't write a novel :D"
+                                    class="textarea"
+                                    name="description"
+                                    required
+                                ></textarea>
+                            </div>
+                        </div>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button type="submit" class="button is-warning">
+                                    Submit
+                                </button>
+                            </div>
+                            <div class="control">
+                                <button
+                                    type="button"
+                                    class="button btn-close is-warning is-light"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <footer class="modal-card-foot">
+                    <p class="subtitle is-6">
+                        TaskX&copy; doesn't share your data with anyone
+                    </p>
+                </footer>
+            </div>
+        </div>
+
+        <section class="container task-list hidden">
+            <div class="columns">
+                <div class="todo column is-one-third"></div>
+                <div class="in-progress column"></div>
+                <div class="completed column"></div>
+            </div>
+        </section>
     </body>
 </html>
