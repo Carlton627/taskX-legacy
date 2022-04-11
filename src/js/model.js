@@ -16,6 +16,7 @@ import {
     query,
     where,
     getDocs,
+    updateDoc,
     deleteDoc,
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
@@ -131,6 +132,25 @@ export const deleteTaskFromFirestore = async function (taskId, taskType) {
         await deleteDoc(taskDocRef);
         const index = state.tasks[taskType].findIndex(el => el.id === taskId);
         state.tasks[taskType].splice(index, 1);
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const updateTaskStatus = async function (
+    taskId,
+    fromTaskType,
+    toTaskType
+) {
+    try {
+        const index = state.tasks[fromTaskType].findIndex(
+            el => el.id === taskId
+        );
+        const [updatedTask] = state.tasks[fromTaskType].splice(index, 1);
+        updatedTask.status = toTaskType;
+        state.tasks[toTaskType].push(updatedTask);
+        const taskDocRef = doc(db, `users/${state.user.uid}/tasks`, taskId);
+        await updateDoc(taskDocRef, { status: toTaskType });
     } catch (err) {
         throw err;
     }

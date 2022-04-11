@@ -1,5 +1,3 @@
-import icons from 'url:../../../src/assets/icons.svg';
-
 export default class TaskView {
     _taskData;
     constructor(parentElement) {

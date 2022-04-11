@@ -15,7 +15,6 @@ import { onAuthStateChanged } from 'firebase/auth';
 const controlSignIn = async function () {
     try {
         await model.googleSignIn();
-        // onUserSignedIn();
     } catch (err) {
         console.error(err.message);
     }
@@ -56,7 +55,7 @@ const controlGetTasks = async function () {
     }
 };
 
-const controlDeleteTask = async function (taskType, taskId) {
+const getTaskMetaData = function (taskType) {
     let type, view, getTasks;
     if (taskType.classList.contains('todo')) {
         type = 'todo';
@@ -71,9 +70,38 @@ const controlDeleteTask = async function (taskType, taskId) {
         view = completedTasksView;
         getTasks = model.getCompletedTasks;
     }
+    return {
+        type,
+        view,
+        getTasks,
+    };
+};
+
+const controlDeleteTask = async function (taskType, taskId) {
+    const { type, view, getTasks } = getTaskMetaData(taskType);
     try {
         await model.deleteTaskFromFirestore(taskId, type);
         view.render(getTasks());
+    } catch (err) {
+        console.log(err.message);
+    }
+};
+
+const controlMarkTaskInProgress = async function (taskId) {
+    try {
+        await model.updateTaskStatus(taskId, 'todo', 'inProgress');
+        todoTasksView.render(model.getTodoTasks());
+        inProgressTasksView.render(model.getInProgressTasks());
+    } catch (err) {
+        console.log(err.message);
+    }
+};
+
+const controlMarkTaskCompleted = async function (taskId) {
+    try {
+        await model.updateTaskStatus(taskId, 'inProgress', 'completed');
+        inProgressTasksView.render(model.getInProgressTasks());
+        completedTasksView.render(model.getCompletedTasks());
     } catch (err) {
         console.log(err.message);
     }
@@ -95,6 +123,8 @@ function runApp() {
     todoTasksView.addHandlerDeleteTask(controlDeleteTask);
     inProgressTasksView.addHandlerDeleteTask(controlDeleteTask);
     completedTasksView.addHandlerDeleteTask(controlDeleteTask);
+    todoTasksView.addHandlerMarkTaskInProgress(controlMarkTaskInProgress);
+    inProgressTasksView.addHandlerMarkTaskCompleted(controlMarkTaskCompleted);
     onAuthStateChanged(model.auth, user => {
         if (user) {
             model.setUserState(user);

@@ -7,7 +7,14 @@ class TodoTasksView extends TaskView {
         super(parentElement);
     }
 
-    addHandlerMarkTaskInProgress(handler) {}
+    addHandlerMarkTaskInProgress(handler) {
+        this._parentElement.addEventListener('click', function (e) {
+            const btn = e.target.closest('.mark__in-progress');
+            if (!btn) return;
+            const taskId = btn.dataset.id;
+            handler(taskId);
+        });
+    }
 
     _generateMarkup() {
         const markup = this._taskData
@@ -24,7 +31,7 @@ class TodoTasksView extends TaskView {
                     </div>
                     <div class="card-footer">
                         <button class="delete-task card-footer-item" data-id="${task.id}">Delete</button>
-                        <button class="card-footer-item">
+                        <button class="mark__in-progress card-footer-item" data-id="${task.id}">
                             Mark in progress
                         </button>
                     </div>
