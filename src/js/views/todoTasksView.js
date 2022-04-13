@@ -1,5 +1,4 @@
 import TaskView from './taskView.js';
-import _ from 'lodash';
 
 class TodoTasksView extends TaskView {
     constructor() {
@@ -8,39 +7,35 @@ class TodoTasksView extends TaskView {
     }
 
     addHandlerMarkTaskInProgress(handler) {
+        const buttonSpinner = this._renderBtnSpinner;
         this._parentElement.addEventListener('click', function (e) {
             const btn = e.target.closest('.mark__in-progress');
             if (!btn) return;
             const taskId = btn.dataset.id;
+            btn.disabled = true;
+            btn.innerHTML = buttonSpinner('Marking in progress');
             handler(taskId);
         });
     }
 
-    _generateMarkup() {
-        const markup = this._taskData
-            .map(task => {
-                if (!_.isEmpty(task))
-                    return `
-            <div class="card">
-                    <div class="card-content">
-                        <p class="subtitle is-6 tag is-warning">${task.status}</p>
-                        <p class="title">${task.name}</p>
-                        <div class="content">
-                            ${task.description}
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="delete-task card-footer-item" data-id="${task.id}">Delete</button>
-                        <button class="mark__in-progress card-footer-item" data-id="${task.id}">
-                            Mark in progress
-                        </button>
-                    </div>
+    _generateMarkup(renderTasks = true) {
+        return `
+            <div class="task-header level">
+                <div class="level-left">
+                    <h1 class="title is-2 level-item">Todos</h1>
                 </div>
+                ${renderTasks ? this._generateDeleteAllButton() : ''}
+            </div>
+            ${
+                renderTasks
+                    ? this._generateTasksMarkup({
+                          btn: 'Mark in progress',
+                          tagClassName: 'is-warning',
+                          btnClassName: 'mark__in-progress',
+                      })
+                    : ''
+            }
         `;
-            })
-            .join('');
-
-        return markup;
     }
 }
 

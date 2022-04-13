@@ -18,6 +18,7 @@ import {
     getDocs,
     updateDoc,
     deleteDoc,
+    writeBatch,
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { async } from 'regenerator-runtime';
@@ -118,20 +119,39 @@ export const addTaskToFirestore = async function (data) {
 };
 
 export const getTasksFromFirestore = async function () {
-    const q = query(
-        collection(db, `users/${state.user.uid}/tasks`),
-        where('author', '==', state.user.uid)
-    );
-    const tasks = await getDocs(q);
-    setTasksState(tasks);
+    try {
+        const q = query(
+            collection(db, `users/${state.user.uid}/tasks`),
+            where('author', '==', state.user.uid)
+        );
+        const tasks = await getDocs(q);
+        setTasksState(tasks);
+    } catch (err) {
+        throw err;
+    }
 };
 
 export const deleteTaskFromFirestore = async function (taskId, taskType) {
     try {
-        taskDocRef = doc(db, `users/${state.user.uid}/tasks`, taskId);
+        const taskDocRef = doc(db, `users/${state.user.uid}/tasks`, taskId);
         await deleteDoc(taskDocRef);
         const index = state.tasks[taskType].findIndex(el => el.id === taskId);
         state.tasks[taskType].splice(index, 1);
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const deleteAllTasksFromFirestore = async function (taskType) {
+    try {
+        const batch = writeBatch(db);
+        const taskDocRefs = state.tasks[taskType].map(task =>
+            doc(db, `users/${state.user.uid}/tasks`, task.id)
+        );
+        // console.log(taskDocRefs);
+        taskDocRefs.forEach(taskDoc => batch.delete(taskDoc));
+        await batch.commit();
+        state.tasks[taskType] = [];
     } catch (err) {
         throw err;
     }

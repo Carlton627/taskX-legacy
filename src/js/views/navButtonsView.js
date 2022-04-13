@@ -12,6 +12,10 @@ class NavButtonsView {
         this._taskList.classList.remove('hidden');
     }
 
+    toggleLoginBtnState(state) {
+        this._btnLogin.disabled = state;
+    }
+
     renderSignInButton() {
         this._btnLogin.classList.remove('hidden');
         this._userSignedIn.classList.add('hidden');

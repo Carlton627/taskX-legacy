@@ -6,30 +6,35 @@ class AddNewTaskView {
         this._btnClose = document.querySelector('.btn-close');
         this._btnOpen = document.querySelector('.nav__btn--new-task');
         this._taskUploadForm = document.querySelector('.task-upload');
+        this._submitFormBtn = document.querySelector('.submit-form');
         this._addHandlerHideWindow();
         this._addHandlerShowWindow();
     }
 
     _addHandlerShowWindow() {
-        this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
+        this._btnOpen.addEventListener('click', this._toggleWindow.bind(this));
     }
 
     _addHandlerHideWindow() {
-        this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
+        this._btnClose.addEventListener('click', this._toggleWindow.bind(this));
         this._btnCloseIcon.addEventListener(
             'click',
-            this.toggleWindow.bind(this)
+            this._toggleWindow.bind(this)
         );
-        this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+        this._overlay.addEventListener('click', this._toggleWindow.bind(this));
     }
 
-    toggleWindow() {
+    _toggleWindow() {
         this._parentElement.classList.toggle('is-active');
         this._clearForm();
     }
 
     _clearForm() {
         this._taskUploadForm.reset();
+    }
+
+    toggleSubmitButtonState(state) {
+        this._submitFormBtn.disabled = state;
     }
 
     addHandlerUploadTask(handler) {

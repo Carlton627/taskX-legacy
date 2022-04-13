@@ -15,3 +15,26 @@ body {
 .task-creator {
     transition: all 0.5s ease;
 }
+
+.task-card {
+    margin: 1rem auto;
+}
+
+.spinner {
+    margin: 50vh auto 0;
+    transform: translateY(-50%);
+}
+
+/* .btn-spinner {
+    animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+} */

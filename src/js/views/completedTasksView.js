@@ -7,28 +7,24 @@ class CompletedTasksView extends TaskView {
         super(parentElement);
     }
 
-    _generateMarkup() {
-        const markup = this._taskData
-            .map(task => {
-                if (!_.isEmpty(task))
-                    return `
-            <div class="card">
-                    <div class="card-content">
-                        <p class="subtitle is-6 tag is-success">${task.status}</p>
-                        <p class="title">${task.name}</p>
-                        <div class="content">
-                            ${task.description}
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="delete-task card-footer-item" data-id="${task.id}">Delete</button>
-                    </div>
+    _generateMarkup(renderTasks = true) {
+        return `
+            <div class="task-header level">
+                <div class="level-left">
+                    <h1 class="title is-2 level-item">Completed</h1>
                 </div>
+                ${renderTasks ? this._generateDeleteAllButton() : ''}
+            </div>
+            ${
+                renderTasks
+                    ? this._generateTasksMarkup({
+                          btn: false,
+                          tagClassName: 'is-success',
+                          btnClassName: '',
+                      })
+                    : ''
+            }
         `;
-            })
-            .join('');
-
-        return markup;
     }
 }
 

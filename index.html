@@ -16,6 +16,10 @@
         />
         <link rel="stylesheet" href="./src/css/style.css" />
         <title>Task X - A nifty tool to manage your tasks</title>
+        <script
+            src="https://kit.fontawesome.com/7a28f491b8.js"
+            crossorigin="anonymous"
+        ></script>
         <script defer src="./src/js/controller.js" type="module"></script>
     </head>
     <body>
@@ -98,7 +102,10 @@
                         </div>
                         <div class="field is-grouped">
                             <div class="control">
-                                <button type="submit" class="button is-warning">
+                                <button
+                                    type="submit"
+                                    class="submit-form button is-warning"
+                                >
                                     Submit
                                 </button>
                             </div>
@@ -126,6 +133,12 @@
                 <div class="todo column is-one-third"></div>
                 <div class="in-progress column"></div>
                 <div class="completed column"></div>
+            </div>
+            <div class="spinner hidden">
+                <progress
+                    class="progress is-small is-danger"
+                    max="100"
+                ></progress>
             </div>
         </section>
     </body>
