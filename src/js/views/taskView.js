@@ -88,7 +88,11 @@ export default class TaskView {
                     <div class="card-content">
                         <p class="subtitle is-6 tag ${
                             properties.tagClassName
-                        }">${task.status}</p>
+                        }">${
+                        task.status === 'inProgress'
+                            ? task.status.split('P').join(' p')
+                            : task.status
+                    }</p>
                         <p class="title">${task.name}</p>
                         <div class="content">
                             ${task.description}

@@ -1,6 +1,9 @@
 // model
 import * as model from './model.js';
 
+// toastr
+import * as toaster from './toaster.js';
+
 // views
 import navbarView from './views/navbarView.js';
 import navButtonsView from './views/navButtonsView.js';
@@ -8,7 +11,6 @@ import todoTasksView from './views/todoTasksView.js';
 import inProgressTasksView from './views/inProgressTasksView.js';
 import completedTasksView from './views/completedTasksView.js';
 import addNewTaskView from './views/addNewTaskView.js';
-import TaskView from './views/taskView.js';
 
 // firebase
 import { onAuthStateChanged } from 'firebase/auth';
@@ -19,7 +21,7 @@ const controlSignIn = async function () {
         await model.googleSignIn();
         navButtonsView.toggleLoginBtnState(false);
     } catch (err) {
-        console.error(err.message);
+        toaster.renderErrorToast(err.message);
     }
 };
 
@@ -27,7 +29,7 @@ const controlSignOut = async function () {
     try {
         await model.signOutUser();
     } catch (err) {
-        console.error(err.message);
+        toaster.renderErrorToast(err.message);
     }
 };
 
@@ -35,13 +37,14 @@ const controlUploadTask = async function (data) {
     try {
         addNewTaskView.toggleSubmitButtonState(true);
         await model.addTaskToFirestore(data);
+        toaster.renderSuccessToast('Task added successfully');
         data.status === 'todo'
             ? todoTasksView.render(model.getTodoTasks())
             : inProgressTasksView.render(model.getInProgressTasks());
         // TODO: render some success message
         addNewTaskView.toggleSubmitButtonState(false);
     } catch (err) {
-        console.log(err);
+        toaster.renderErrorToast(err.message);
     }
 };
 
@@ -54,7 +57,7 @@ const controlGetTasks = async function () {
         inProgressTasksView.render(model.getInProgressTasks());
         completedTasksView.render(model.getCompletedTasks());
     } catch (err) {
-        console.log(err.message);
+        toaster.renderErrorToast(err.message);
     }
 };
 
@@ -84,9 +87,10 @@ const controlDeleteTask = async function (taskType, taskId) {
     const { type, view, getTasks } = getTaskMetaData(taskType);
     try {
         await model.deleteTaskFromFirestore(taskId, type);
+        toaster.renderSuccessToast('Task deleted');
         view.render(getTasks());
     } catch (err) {
-        console.log(err.message);
+        toaster.renderErrorToast(err.message);
     }
 };
 
@@ -94,9 +98,14 @@ const controlDeleteAllTasks = async function (taskType) {
     const { type, view, getTasks } = getTaskMetaData(taskType);
     try {
         await model.deleteAllTasksFromFirestore(type);
+        toaster.renderSuccessToast(
+            `All ${
+                type === 'inProgress' ? type.split('P').join(' p') : type
+            } tasks deleted`
+        );
         view.render(getTasks());
     } catch (err) {
-        console.log(err.message);
+        toaster.renderErrorToast(err.message);
     }
 };
 
@@ -106,7 +115,7 @@ const controlMarkTaskInProgress = async function (taskId) {
         todoTasksView.render(model.getTodoTasks());
         inProgressTasksView.render(model.getInProgressTasks());
     } catch (err) {
-        console.log(err.message);
+        toaster.renderErrorToast(err.message);
     }
 };
 
@@ -116,13 +125,17 @@ const controlMarkTaskCompleted = async function (taskId) {
         inProgressTasksView.render(model.getInProgressTasks());
         completedTasksView.render(model.getCompletedTasks());
     } catch (err) {
-        console.log(err.message);
+        toaster.renderErrorToast(err.message);
     }
 };
 
 const onUserSignedIn = async function () {
     navButtonsView.renderUserSignedInButtons();
-    await controlGetTasks();
+    try {
+        await controlGetTasks();
+    } catch (err) {
+        toaster.renderErrorToast(err.message);
+    }
 };
 
 const onUserSignOff = function () {
