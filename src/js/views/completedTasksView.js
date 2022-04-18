@@ -18,7 +18,7 @@ class CompletedTasksView extends TaskView {
             ${
                 renderTasks
                     ? this._generateTasksMarkup({
-                          btn: false,
+                          btn: '',
                           tagClassName: 'is-success',
                           btnClassName: '',
                       })

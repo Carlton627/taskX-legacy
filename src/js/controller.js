@@ -19,9 +19,10 @@ const controlSignIn = async function () {
     try {
         navButtonsView.toggleLoginBtnState(true);
         await model.googleSignIn();
-        navButtonsView.toggleLoginBtnState(false);
     } catch (err) {
         toaster.renderErrorToast(err.message);
+    } finally {
+        navButtonsView.toggleLoginBtnState(false);
     }
 };
 
@@ -41,10 +42,10 @@ const controlUploadTask = async function (data) {
         data.status === 'todo'
             ? todoTasksView.render(model.getTodoTasks())
             : inProgressTasksView.render(model.getInProgressTasks());
-        // TODO: render some success message
-        addNewTaskView.toggleSubmitButtonState(false);
     } catch (err) {
         toaster.renderErrorToast(err.message);
+    } finally {
+        addNewTaskView.toggleSubmitButtonState(false);
     }
 };
 
@@ -131,6 +132,10 @@ const controlMarkTaskCompleted = async function (taskId) {
 
 const onUserSignedIn = async function () {
     navButtonsView.renderUserSignedInButtons();
+    navButtonsView.renderUserSection(
+        model.state.user?.firstName,
+        model.state.user?.photoURL
+    );
     try {
         await controlGetTasks();
     } catch (err) {

@@ -25,25 +25,39 @@
     <body>
         <nav class="navbar is-warning navbar-main" role="navigation">
             <div class="navbar-brand">
-                <h2 class="navbar-item">taskX</h2>
+                <div class="navbar-item">
+                    <img
+                        class="nav-logo"
+                        src="./src/assets/taskX_logo_nav.png"
+                        alt=""
+                    />
+                </div>
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <div class="buttons">
-                        <button class="button button-login is-light">
-                            <img src="./src/assets/Google__G__Logo.svg" />
-                            &nbsp;Sign in
+                    <button class="button button-login is-light">
+                        <img src="./src/assets/Google__G__Logo.svg" />
+                        &nbsp;Sign in
+                    </button>
+                </div>
+                <span class="user-signed-in hidden">
+                    <div class="navbar-item">
+                        <button
+                            class="nav__btn--new-task button is-warning is-light"
+                        >
+                            New task
                         </button>
-                        <div class="user-signed-in hidden">
-                            <button
-                                class="nav__btn--new-task button is-warning is-light"
-                            >
-                                New task
-                            </button>
-                            <button class="button button-logoff is-warning">
-                                Sign out
-                            </button>
-                        </div>
+                    </div>
+                </span>
+
+                <div
+                    class="user-signed-in hidden navbar-item has-dropdown is-hoverable"
+                >
+                    <a class="navbar-link username"> </a>
+                    <div class="navbar-dropdown">
+                        <a class="button-logoff navbar-item"> Sign out </a>
+                        <hr class="navbar-divider" />
+                        <p class="navbar-item is-warning">TaskX&copy; 1.0.1</p>
                     </div>
                 </div>
             </div>
@@ -128,7 +142,7 @@
             </div>
         </div>
 
-        <section class="container task-list hidden">
+        <section class="task-list hidden">
             <div class="columns">
                 <div class="todo column is-one-third"></div>
                 <div class="in-progress column"></div>
@@ -141,5 +155,57 @@
                 ></progress>
             </div>
         </section>
+
+        <section class="banner">
+            <div class="hero is-fullheight-with-navbar">
+                <div class="hero-body">
+                    <div class="columns">
+                        <div class="column is-half">
+                            <img src="./src/assets/taskX_logo.png" alt="" />
+                        </div>
+                        <div class="column">
+                            <img src="./src/assets/tasks_home.svg" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>
+                    <strong>TaskX&copy;</strong> created by
+                    <a href="https://carltonrodrigues.com" target="_blank"
+                        >Carlton Rodrigues</a
+                    >
+                </p>
+                <span class="icon">
+                    <a
+                        class="twitter-icon"
+                        target="_blank"
+                        href="https://twitter.com/CarltonRodz?s=09"
+                        ><i class="fab fa-twitter"></i
+                    ></a>
+                </span>
+                <span class="icon">
+                    <a
+                        class="github-icon"
+                        target="_blank"
+                        href="https://github.com/Carlton627"
+                    >
+                        <i class="fa fa-github"></i>
+                    </a>
+                </span>
+                <span class="icon">
+                    <a
+                        href="https://linkedin.com/in/carlton-rodrigues"
+                        target="_blank"
+                        class="linkedin-icon"
+                    >
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                </span>
+            </div>
+        </footer>
     </body>
 </html>

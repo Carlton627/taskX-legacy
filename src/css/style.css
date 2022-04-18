@@ -16,8 +16,13 @@ body {
     transition: all 0.5s ease;
 }
 
+.task-list {
+    margin: 0.75rem;
+}
+
 .task-card {
-    margin: 1rem auto;
+    margin: 1rem;
+    min-width: 33%;
 }
 
 .spinner {
@@ -25,16 +30,30 @@ body {
     transform: translateY(-50%);
 }
 
-/* .btn-spinner {
-    animation: rotate 2s infinite linear;
+.user-img {
+    border-radius: 50%;
 }
 
-@keyframes rotate {
-    0% {
-        transform: rotate(0);
-    }
+.nav-logo {
+    height: 60%;
+    width: 100%;
+}
 
-    100% {
-        transform: rotate(360deg);
-    }
-} */
+.twitter-icon,
+.github-icon,
+.linkedin-icon {
+    transition: all 0.7s ease;
+    color: gray;
+}
+
+.twitter-icon:hover {
+    color: #109afb;
+}
+
+.github-icon:hover {
+    color: black;
+}
+
+.linkedin-icon:hover {
+    color: #0a66c2;
+}
