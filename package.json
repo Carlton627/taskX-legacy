@@ -26,6 +26,7 @@
         "bulma-toast": "^2.4.1",
         "core-js": "^3.21.1",
         "firebase": "^9.6.10",
+        "firebase-tools": "^10.6.0",
         "lodash": "^4.17.21",
         "regenerator-runtime": "^0.13.9",
         "uuid": "^8.3.2"

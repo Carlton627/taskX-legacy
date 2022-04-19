@@ -148,7 +148,6 @@ export const deleteAllTasksFromFirestore = async function (taskType) {
         const taskDocRefs = state.tasks[taskType].map(task =>
             doc(db, `users/${state.user.uid}/tasks`, task.id)
         );
-        // console.log(taskDocRefs);
         taskDocRefs.forEach(taskDoc => batch.delete(taskDoc));
         await batch.commit();
         state.tasks[taskType] = [];
