@@ -33,8 +33,27 @@ class AddNewTaskView {
         this._taskUploadForm.reset();
     }
 
+    _renderBtnSpinner(btnText) {
+        return `
+                <div class="level">
+                    <div class="level-left">
+                        <span class="level-item">${btnText}</span>
+                    </div>
+                    &nbsp;
+                    <div class="level-right">
+                        <i class="fa-solid fa-spinner fa-pulse level-item"></i>
+                    </div>
+                </div>
+            `;
+    }
+
     toggleSubmitButtonState(state) {
         this._submitFormBtn.disabled = state;
+        let btnDisplay;
+        state
+            ? (btnDisplay = this._renderBtnSpinner('Adding Task'))
+            : (btnDisplay = 'Submit');
+        this._submitFormBtn.innerHTML = btnDisplay;
     }
 
     addHandlerUploadTask(handler) {
