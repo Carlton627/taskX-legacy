@@ -114,6 +114,61 @@
                                 ></textarea>
                             </div>
                         </div>
+                        <hr />
+                        <div class="field">
+                            <div class="control">
+                                <div class="checkbox">
+                                    <label class="label">
+                                        Set Deadline? &nbsp;
+                                        <input
+                                            type="checkbox"
+                                            name="setDeadline"
+                                            class="deadline-checkbox"
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field is-grouped dates">
+                            <div class="control">
+                                <div class="date">
+                                    <label class="label">
+                                        Start date
+                                        <i class="fa fa-info-circle"></i>
+                                    </label>
+                                    <input
+                                        type="date"
+                                        class="input start-date"
+                                        name="startsOn"
+                                        disabled
+                                    />
+                                    <p
+                                        class="help is-danger start-error-text-1 hidden"
+                                    ></p>
+                                    <p
+                                        class="help is-danger start-error-text-2 hidden"
+                                    ></p>
+                                </div>
+                            </div>
+                            <div class="control">
+                                <div class="date">
+                                    <label class="label">End date</label>
+                                    <input
+                                        type="date"
+                                        class="input deadline-date"
+                                        name="deadline"
+                                        disabled
+                                    />
+                                </div>
+                                <p
+                                    class="help is-danger end-error-text-1 hidden"
+                                ></p>
+                                <p
+                                    class="help is-danger end-error-text-2 hidden"
+                                ></p>
+                            </div>
+                        </div>
+                        <hr />
                         <div class="field is-grouped">
                             <div class="control">
                                 <button

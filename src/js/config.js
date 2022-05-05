@@ -7,3 +7,16 @@ export const firebaseConfig = {
     appId: '1:953774839776:web:58563e4ee559273ccbfd85',
     measurementId: 'G-Y337WTLDC0',
 };
+
+export const errorMessages = {
+    startDate: {
+        lessThanCurrentDate: '⚠️ Start date cannot be in the past',
+        startDateGreaterThanEndDate:
+            '⚠️ Start date cannot be after deadline date',
+    },
+    endDate: {
+        lessThanCurrentDate: '⚠️ Deadline date cannot be in the past',
+        endDateLessThanStartDate:
+            '⚠️ Deadline date cannot be before start date',
+    },
+};

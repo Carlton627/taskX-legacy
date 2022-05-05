@@ -1,6 +1,6 @@
 {
     "name": "taskx",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "A nifty tool to manage your tasks",
     "default": "index.html",
     "scripts": {

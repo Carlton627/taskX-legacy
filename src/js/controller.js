@@ -2,7 +2,7 @@
 import * as model from './model.js';
 
 // toastr
-import * as toaster from './toaster.js';
+import * as toaster from './helpers.js';
 
 // views
 import navbarView from './views/navbarView.js';

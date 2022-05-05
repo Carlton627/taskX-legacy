@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { getDateWithMidnightTime, getBtnSpinnerMarkup } from '../helpers.js';
 
 export default class TaskView {
     _taskData;
@@ -9,7 +10,7 @@ export default class TaskView {
 
     render(data) {
         if (!data || (Array.isArray(data) && data.length === 0))
-            return this._renderNoTasks(); // error message here
+            return this._renderNoTasks();
         this._taskData = data;
         const markup = this._generateMarkup();
         this._clear();
@@ -58,17 +59,7 @@ export default class TaskView {
     }
 
     _renderBtnSpinner(btnText) {
-        return `
-                <div class="level">
-                    <div class="level-left">
-                        <span class="level-item">${btnText}</span>
-                    </div>
-                    &nbsp;
-                    <div class="level-right">
-                        <i class="fa-solid fa-spinner fa-pulse level-item"></i>
-                    </div>
-                </div>
-            `;
+        return getBtnSpinnerMarkup(btnText);
     }
 
     _generateDeleteAllButton() {
@@ -79,6 +70,56 @@ export default class TaskView {
                 `;
     }
 
+    // TODO: check for all conditions
+    // Does it have a startsOn greater than current date
+    // Does it have a startsOn = current date or no startsOn at all
+    // Did the current date go beyond endDate
+
+    _findDaysLeft(dateDiff) {
+        return Math.ceil(dateDiff / (1000 * 3600 * 24));
+    }
+
+    _generateDeadlineMarkup(taskData) {
+        // dateDiff = startDate/deadlineDate - currentDate
+        const currentDate = getDateWithMidnightTime();
+        const deadline = getDateWithMidnightTime(new Date(taskData?.deadline));
+        let startDateExists = false;
+        let dateMessage = '';
+        let styleClass = '';
+        if (taskData?.startsOn) {
+            const startDate = getDateWithMidnightTime(
+                new Date(taskData?.startsOn)
+            );
+            if (startDate > currentDate) {
+                // task has not started yet
+                const daysLeft = this._findDaysLeft(startDate - currentDate);
+                dateMessage =
+                    daysLeft > 1
+                        ? `Starts in ${daysLeft} days`
+                        : 'Starts Tomorrow';
+                startDateExists = true;
+            }
+        }
+        if (!startDateExists) {
+            if (deadline >= currentDate) {
+                // task has not reached its deadline
+                const daysLeft = this._findDaysLeft(deadline - currentDate);
+                dateMessage = daysLeft ? `${daysLeft} days left` : 'Due Today';
+                styleClass = 'text-green';
+            } else {
+                // task deadline expired
+                dateMessage = 'Deadline crossed';
+                styleClass = 'text-red';
+            }
+        }
+        return `
+            <span class="deadline ${styleClass}">
+                <i class="fa-regular fa-clock"></i>
+                ${dateMessage}
+            </span>
+        `;
+    }
+
     _generateTasksMarkup(properties) {
         const markup = this._taskData
             .map(task => {
@@ -86,13 +127,28 @@ export default class TaskView {
                     return `
             <div class="card task-card">
                     <div class="card-content">
-                        <p class="subtitle is-6 tag ${
-                            properties.tagClassName
-                        }">${
+                        <div class="level">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <p class="subtitle is-6 tag ${
+                                        properties.tagClassName
+                                    }">${
                         task.status === 'inProgress'
                             ? task.status.split('P').join(' p')
                             : task.status
                     }</p>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    ${
+                                        task.setDeadline
+                                            ? this._generateDeadlineMarkup(task)
+                                            : ''
+                                    }
+                                </div>
+                            </div>
+                        </div>
                         <p class="title">${task.name}</p>
                         <div class="content">
                             ${task.description}
