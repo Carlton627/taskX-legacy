@@ -36,10 +36,22 @@ export const state = {
     },
 };
 
+/**
+ * Set the login state to true or false.
+ * @param {boolean} loggedIn The login state of the user.
+ * @returns {undefined} this function is just used to set a state variable and doesn't return anything.
+ * @author Carlton Rodrigues
+ */
 export const setLoggedInState = function (loggedIn) {
     state.loggedIn = loggedIn;
 };
 
+/**
+ * Set the tasks for each task category [todo, in-progress, completed].
+ * @param {Object | Object[]} tasks task objects recieved from firebase.
+ * @returns {undefined} this function is just used to set a state variable and doesn't return anything.
+ * @author Carlton Rodrigues
+ */
 export const setTasksState = function (tasks) {
     if (!tasks) {
         state.tasks.todo = [];
@@ -59,6 +71,12 @@ export const setTasksState = function (tasks) {
     }
 };
 
+/**
+ * Set the information on the current user logged into the app.
+ * @param {Object} user user credential object recieved upon signing in to firebase.
+ * @returns {undefined} this function is just used to set a state variable and doesn't return anything.
+ * @author Carlton Rodrigues
+ */
 export const setUserState = function (user) {
     state.user = {};
     if (user)
@@ -71,14 +89,29 @@ export const setUserState = function (user) {
         };
 };
 
+/**
+ * Getter for todo tasks
+ * @returns {Object[]} todo tasks present in the state variable.
+ * @author Carlton Rodrigues
+ */
 export const getTodoTasks = function () {
     return state.tasks.todo;
 };
 
+/**
+ * Getter for in progress tasks
+ * @returns {Object[]} in progress tasks present in the state variable.
+ * @author Carlton Rodrigues
+ */
 export const getInProgressTasks = function () {
     return state.tasks.inProgress;
 };
 
+/**
+ * Getter for completed tasks
+ * @returns {Object[]} completed tasks present in the state variable.
+ * @author Carlton Rodrigues
+ */
 export const getCompletedTasks = function () {
     return state.tasks.completed;
 };
@@ -89,17 +122,34 @@ export const getCompletedTasks = function () {
 
 export const auth = getAuth();
 
+/**
+ * Function to check whether the logged in user is a registered user.
+ * @param {string} docId document id to be fetched from cloud firestore.
+ * @returns {DocumentSnapshot<documentData>} returns the document if found, or else return undefined.
+ * @author Carlton Rodrigues
+ */
 const userExists = function (docId) {
     const userDoc = doc(db, 'users', docId);
     return getDoc(userDoc);
 };
 
+/**
+ * Function to register a user into cloud firestore
+ * @param {string} docId passing the uid of the newly signed in user to be used as the document id.
+ * @param {Object} userData passing the state.user property to create a new user in firestore.
+ * @returns {Promise} promise which will be fulfilled in the calling function
+ */
 const addUserToFirestore = function (docId, userData) {
     const userDoc = doc(db, 'users', docId);
     return setDoc(userDoc, userData);
 };
 
-// tasks doc path: users/uid/tasks/taskid
+/**
+ * Function to add a new task to cloud firestore, tasks doc path: users/uid/tasks/taskid
+ * @param {Object} data data recieved from the user via the task creation form
+ * @returns {undefined} this function is just used to set task state variable and doesn't return anything.
+ * @author Carlton Rodrigues
+ */
 export const addTaskToFirestore = async function (data) {
     const task = {
         ...data,
@@ -118,6 +168,11 @@ export const addTaskToFirestore = async function (data) {
     }
 };
 
+/**
+ * Function get all the tasks from cloud firestore.
+ * @returns {undefined} this function is just used to set task state variable and doesn't return anything.
+ * @author Carlton Rodrigues
+ */
 export const getTasksFromFirestore = async function () {
     try {
         const q = query(
@@ -131,6 +186,12 @@ export const getTasksFromFirestore = async function () {
     }
 };
 
+/**
+ * Function delete a task from firestore
+ * @param {string} taskId corrosponds to the document id to be deleted from firestore.
+ * @param {string} taskType is used to delete the task from the task state variable, can have values ['todo', 'inProgress', 'completed'].
+ * @author Carlton Rodrigues
+ */
 export const deleteTaskFromFirestore = async function (taskId, taskType) {
     try {
         const taskDocRef = doc(db, `users/${state.user.uid}/tasks`, taskId);
@@ -142,6 +203,11 @@ export const deleteTaskFromFirestore = async function (taskId, taskType) {
     }
 };
 
+/**
+ * Function to delete all tasks of a specific category
+ * @param {string} taskType corrosponds to the type of task for which the delete all button was clicked, can have values ['todo', 'inProgress', 'completed'].
+ * @author Carlton Rodrigues
+ */
 export const deleteAllTasksFromFirestore = async function (taskType) {
     try {
         const batch = writeBatch(db);
@@ -156,6 +222,13 @@ export const deleteAllTasksFromFirestore = async function (taskType) {
     }
 };
 
+/**
+ * Function to transition task status from todo -> inProgress -> completed.
+ * @param {string} taskId corrosponds to the document id that has to be updated.
+ * @param {string} fromTaskType corrosponds to the previous task status of the task to be updated.
+ * @param {string} toTaskType corrosponds to status to which the task has to updated.
+ * @author Carlton Rodrigues
+ */
 export const updateTaskStatus = async function (
     taskId,
     fromTaskType,
@@ -179,6 +252,10 @@ export const getUser = function () {
     return auth.currentUser;
 };
 
+/**
+ * Function to sign in user with their Google accounts.
+ * @author Carlton Rodrigues
+ */
 export const googleSignIn = async function () {
     try {
         const credential = await signInWithPopup(
@@ -197,6 +274,10 @@ export const googleSignIn = async function () {
     }
 };
 
+/**
+ * Function to signout user from the app
+ * @author Carlton Rodrigues
+ */
 export const signOutUser = async function () {
     try {
         await signOut(auth);
